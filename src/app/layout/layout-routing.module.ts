@@ -20,17 +20,17 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'template-ui',
+        path: 'user-profile',
         loadChildren: () =>
-          import('../features/template-ui/template-ui.module').then(
-            (m) => m.TemplateUiModule
+          import('../features/user-profile/user-profile.module').then(
+            (m) => m.UserProfileModule
           ),
       },
       // {
-      //   path: 'supplier',
+      //   path: 'template-ui',
       //   loadChildren: () =>
-      //     import('../features/supplier/supplier.module').then(
-      //       (m) => m.SupplierModule
+      //     import('../features/template-ui/template-ui.module').then(
+      //       (m) => m.TemplateUiModule
       //     ),
       // },
       // {
@@ -38,13 +38,6 @@ const routes: Routes = [
       //   loadChildren: () =>
       //     import('../features/calendar/calendar.module').then(
       //       (m) => m.CalendarModule
-      //     ),
-      // },
-      // {
-      //   path: 'setting',
-      //   loadChildren: () =>
-      //     import('../features/setting/setting.module').then(
-      //       (m) => m.SettingModule
       //     ),
       // },
     ],
