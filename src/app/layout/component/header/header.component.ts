@@ -22,6 +22,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { HeaderConfig } from '../../interfaces/header-config.intercface';
 import { LayoutService } from '../../services/layout.service';
 import { Location } from '@angular/common';
+import { User } from '@features/user-profile/interfaces/user-profile';
+import { FcConfirmService } from '@shared/components/fc-confirm/fc-confirm.service';
 
 @Component({
   selector: 'app-header',
@@ -58,34 +60,37 @@ export class HeaderComponent {
   searchConfig: any = {};
 
   menus: any = [];
-  user: any = {
-    id: 6,
-    name: 'Muhammad Faishal',
-    phone_no: '0822223334',
-    address: 'Earth',
-    email: 'tes3@folxcode.com',
-    is_verified: false,
-    created_at: '2023-05-24T05:02:34.000Z',
-    updated_at: '2023-07-10T10:16:18.000Z',
-    deleted_at: null,
-    staff: {
-      role_name: 'Accounting',
-      id: 4,
-      user_id: 6,
-      note: 'nullable',
-      role: 2,
-      created_at: '2023-05-24T05:02:35.000Z',
-      updated_at: '2023-05-29T13:50:57.000Z',
-      deleted_at: null,
-      business_units: [],
-      teacher: null,
-    },
-  };
+  // user: any = {
+  //   id: 6,
+  //   name: 'Muhammad Faishal',
+  //   phone_no: '0822223334',
+  //   address: 'Earth',
+  //   email: 'tes3@folxcode.com',
+  //   is_verified: false,
+  //   created_at: '2023-05-24T05:02:34.000Z',
+  //   updated_at: '2023-07-10T10:16:18.000Z',
+  //   deleted_at: null,
+  //   staff: {
+  //     role_name: 'Accounting',
+  //     id: 4,
+  //     user_id: 6,
+  //     note: 'nullable',
+  //     role: 2,
+  //     created_at: '2023-05-24T05:02:35.000Z',
+  //     updated_at: '2023-05-29T13:50:57.000Z',
+  //     deleted_at: null,
+  //     business_units: [],
+  //     teacher: null,
+  //   },
+  // };
+  userRole: string = '';
+  user: any = {} as User;
   notifications = [1, 2, 3, 4, 5];
   constructor(
     private layoutService: LayoutService,
     private darkModeService: DarkModeService,
     private router: Router,
+    private fcConfirmService: FcConfirmService,
     private authService: AuthService,
     private title: Title,
     private location: Location
@@ -107,6 +112,14 @@ export class HeaderComponent {
     this.authService.currentUserDataSubject.subscribe((user) => {
       if (user) {
         this.user = user;
+
+        if (this.user.student) {
+          this.userRole = 'Student';
+        } else if (this.user.staff?.role_name) {
+          this.userRole = this.user.staff.role_name;
+        } else {
+          this.userRole = 'Unknown';
+        }
       }
     });
   }
@@ -134,7 +147,16 @@ export class HeaderComponent {
     this.darkModeService.changeTo(mode);
   }
   logout() {
-    this.authService.logout();
+    this.fcConfirmService.open({
+      header: 'Confirmation',
+      message: 'Are you sure you want to logout?',
+      accept: () => {
+        this.authService.logout();
+      },
+      reject: () => {
+        console.warn('Logout canceled');
+      },
+    });
   }
   back() {
     this.location.back();
