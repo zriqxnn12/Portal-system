@@ -26,6 +26,13 @@ const routes: Routes = [
             (m) => m.UserProfileModule
           ),
       },
+      {
+        path: 'invoice',
+        loadChildren: () =>
+          import('../features/invoice/invoice.module').then(
+            (m) => m.InvoiceModule
+          ),
+      },
       // {
       //   path: 'template-ui',
       //   loadChildren: () =>

@@ -47,7 +47,7 @@ export class MenuPageComponent {
       title: 'Payment',
       icon: 'assets/images/icon/payment.png',
       is_only_for_student: true,
-      link: '/service-invoice',
+      link: '/invoice',
     },
     {
       title: 'Event',
@@ -71,6 +71,12 @@ export class MenuPageComponent {
   ) {
     this.layoutService.setSearchConfig({
       hide: true,
+    });
+    this.layoutService.setHeaderConfig({
+      title: 'Liszthoven Portal',
+      icon: '',
+      showHeader: true,
+      showBackButton: false,
     });
     // User
     this.authService.getCurrentUserData.subscribe((user) => {

@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
+import { MessageService } from 'primeng/api';
 
 export function playerFactory() {
   return import(/* webpackChunkName: 'lottie-web' */ 'lottie-web');
@@ -33,7 +34,7 @@ export function playerFactory() {
     LottieModule.forRoot({ player: playerFactory }),
     FcConfirmModule,
   ],
-  providers: [provideClientHydration()],
+  providers: [provideClientHydration(), MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

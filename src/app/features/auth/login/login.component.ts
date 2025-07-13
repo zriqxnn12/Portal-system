@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { DarkModeService } from 'src/app/shared/services/dark-mode.service';
 
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private darkModeService: DarkModeService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
     this.loginForm = new FormGroup({
       username: new FormControl('', Validators.required),
@@ -45,8 +47,13 @@ export class LoginComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
+        this.messageService.clear();
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Login',
+          detail: err.message,
+        });
       },
     });
-    this.router.navigate(['/']);
   }
 }
