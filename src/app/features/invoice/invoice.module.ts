@@ -13,6 +13,7 @@ import { FcInputNumberModule } from '@shared/components/fc-input-number/fc-input
 import { FcPaginationModule } from '@shared/components/fc-pagination/fc-pagination.module';
 import { FcTextareaModule } from '@shared/components/fc-textarea/fc-textarea.module';
 import { FcImagePreviewModule } from '@shared/components/fc-image-preview/fc-image-preview.module';
+import { FcFileInputModule } from '@shared/components/fc-file-input/fc-file-input.module';
 
 @NgModule({
   declarations: [InvoiceListComponent, InvoiceViewComponent, InvoiceComponent],
@@ -27,6 +28,7 @@ import { FcImagePreviewModule } from '@shared/components/fc-image-preview/fc-ima
     FcPaginationModule,
     FcTextareaModule,
     FcImagePreviewModule,
+    FcFileInputModule,
   ],
 })
 export class InvoiceModule {}

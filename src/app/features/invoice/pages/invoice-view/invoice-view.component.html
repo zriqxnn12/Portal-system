@@ -1,1 +1,165 @@
-<p>invoice-view works!</p>
+<div class="flex h-full justify-center gap-3 pt-2 @container">
+  <div
+    class="flex h-full w-full max-w-4xl flex-col justify-center gap-3 rounded-md bg-white shadow-lg ring-1 ring-gray-200 transition-all duration-700 ease-in-out @container">
+    <div class="body flex h-full w-full gap-3 overflow-y-auto">
+      <div class="mt-2 w-full p-1 px-4">
+        <div class="mt-1 items-center justify-center border-b pb-4 text-center">
+          <h2 class="text-lg font-bold text-gray-800">
+            Payment Period {{ serviceInvoice.date | date: 'MMMM yyyy' }}
+          </h2>
+          <p class="text-sm text-gray-600">
+            Payment ID:
+            <span class="font-medium"> #{{ serviceInvoice.invoice_no }}</span>
+          </p>
+        </div>
+        <div class="mt-4 items-end justify-start space-y-2 text-left">
+          <p class="text-sm text-gray-600">
+            Billed To:
+            <span class="font-semibold capitalize">
+              {{ serviceInvoice.student.user.name }}
+            </span>
+          </p>
+          <p class="text-sm text-gray-600">
+            Due Date:
+            <span class="font-semibold capitalize">
+              {{ serviceInvoice.date | date: 'dd MMMM yyyy' }}
+            </span>
+          </p>
+          <p class="text-sm text-gray-600">
+            Payment Method:
+            <span class="font-semibold capitalize"> Manual </span>
+          </p>
+          <div class="flex items-center gap-2">
+            <p class="text-sm text-gray-600">Status payment:</p>
+            <div
+              [ngClass]="getStatusColor(serviceInvoice.status)"
+              class="w-fit rounded-md px-2 py-1 text-sm">
+              {{ serviceInvoice.status_name }}
+            </div>
+          </div>
+        </div>
+        <div
+          class="sale-payment-detail mt-4 text-sm text-gray-600 @xl:col-span-2">
+          <div class="mb-3 flex items-center justify-between">
+            <p>Payment Details:</p>
+          </div>
+
+          <div class="grid gap-2">
+            <!-- desktop-->
+            <ng-container
+              *ngFor="
+                let serviceInvoiceDetail of serviceInvoiceDetailFormArray.value;
+                let i = index
+              ">
+              <div class="hidden md:block">
+                <div
+                  class="fc-animate-translate-up grid grid-cols-1 items-center justify-between gap-5 rounded-md border border-light-low bg-light-low p-3 hover:border-primary-light @lg:flex dark:border-dark-low dark:bg-dark-low hover:dark:border-primary-light">
+                  <div class="flex-1">
+                    <p class="text-xs">Item</p>
+                    <p class="mt-1 font-semibold">
+                      {{ serviceInvoiceDetail.item }}
+                    </p>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-xs">Price</p>
+                    <p class="mt-1 font-semibold">
+                      {{ serviceInvoiceDetail.price | fcCurrency }}
+                    </p>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-xs">Total</p>
+                    <p class="font-semibold">
+                      {{ serviceInvoiceDetail.price | fcCurrency }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container
+              *ngFor="
+                let serviceInvoiceDetail of serviceInvoiceDetailFormArray.value;
+                let i = index
+              ">
+              <div class="block gap-1 md:hidden md:grid-cols-2">
+                <div class="rounded-xl border border-gray-300 bg-gray-50 p-4">
+                  <div class="flex items-center">
+                    <div class="space-y-1">
+                      <p class="text-sm text-gray-500">
+                        Type:
+                        <span class="font-semibold">
+                          {{ serviceInvoiceDetail.item }}
+                        </span>
+                      </p>
+                      <p class="text-sm capitalize text-gray-500">
+                        Total:
+                        <span class="font-semibold text-green-500">
+                          {{ serviceInvoiceDetail.price | fcCurrency }}</span
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div class="mb-2 flex justify-end @container">
+              <div class="w-full rounded-md p-3 @xl:w-96">
+                <div
+                  class="mt-1 flex items-center justify-between px-1 font-bold md:justify-start">
+                  <p class="@xl:ml-8 @xl:mr-24">Grand Total</p>
+                  <p class="text-green-500">
+                    {{ serviceInvoice.grand_total | fcCurrency }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- upload document -->
+          <form [formGroup]="serviceInvoiceDocumentForm">
+            <div
+              *ngIf="serviceInvoice.status === 0"
+              class="mt-6 flex h-[200px] flex-col rounded-md border-2 border-dashed border-gray-300 p-4">
+              <fc-file-input
+                (onInput)="addImage($event)"
+                *ngIf="!serviceInvoiceDocumentForm.value.file_path">
+                <div class="mx-auto items-center text-center text-gray-300">
+                  <fa-icon
+                    [icon]="faImage"
+                    [fixedWidth]="true"
+                    class="h-12 w-12 text-4xl"></fa-icon>
+                  <h3 class="text-center text-gray-700">
+                    Paste, Drag and Drop, or Select Images <br />
+                  </h3>
+                </div>
+              </fc-file-input>
+              <div
+                class="flex flex-1 gap-3 overflow-x-auto"
+                *ngIf="serviceInvoiceDocumentForm.value.file_path">
+                <div class="aspect-square h-full">
+                  <fc-image-preview
+                    class="w-full"
+                    [preview]="true"
+                    [src]="serviceInvoiceDocumentForm.value.file_path.img_src"
+                    [alt]="'Happy Beauty'">
+                  </fc-image-preview>
+                </div>
+              </div>
+            </div>
+
+            <button
+              (click)="submit()"
+              [disabled]="serviceInvoice.status_name !== 'Pending'"
+              class="mt-5 w-full cursor-pointer rounded-lg bg-red-500 p-2 text-white transition duration-300 ease-in-out hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50">
+              pay now
+              <fa-icon
+                *ngIf="uploadLoading"
+                [icon]="faSpinner"
+                [fixedWidth]="true"
+                [spin]="true"></fa-icon>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

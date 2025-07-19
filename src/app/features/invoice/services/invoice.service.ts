@@ -41,24 +41,10 @@ export class ServiceInvoiceService {
     return this.http.get(`${ROOT_API}/service-invoices/${id}`);
   }
 
-  addServiceInvoice(data: any) {
-    return this.http.post(`${ROOT_API}/service-invoices`, data);
-  }
-
-  updateServiceInvoice(id: number, data: any) {
-    return this.http.put(`${ROOT_API}/service-invoices/${id}`, data);
-  }
-
-  // manipulation status
-  updateStatusToApproved(id: number) {
-    return this.http.put(`${ROOT_API}/service-invoices/${id}/approve`, {});
-  }
-
-  updateStatusToCancelled(id: number) {
-    return this.http.put(`${ROOT_API}/service-invoices/${id}/cancel`, {});
-  }
-
-  deleteServiceInvoice(id: number) {
-    return this.http.delete(`${ROOT_API}/service-invoices/${id}`);
+  uploadServiceInvoiceDocument(invoiceId: number, data: any) {
+    return this.http.post(
+      `${ROOT_API}/service-invoices/${invoiceId}/document`,
+      data
+    );
   }
 }
