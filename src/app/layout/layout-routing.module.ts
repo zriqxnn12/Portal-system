@@ -33,6 +33,13 @@ const routes: Routes = [
             (m) => m.InvoiceModule
           ),
       },
+      {
+        path: 'feedback',
+        loadChildren: () =>
+          import('../features/feedback/feedback.module').then(
+            (m) => m.FeedbackModule
+          ),
+      },
       // {
       //   path: 'template-ui',
       //   loadChildren: () =>

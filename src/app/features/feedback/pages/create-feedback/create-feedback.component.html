@@ -1,0 +1,71 @@
+<div class="flex h-full gap-3 @container">
+  <div
+    class="flex h-full w-full flex-col gap-3 transition-all duration-700 ease-in-out @container">
+    <form [formGroup]="feedbackForm">
+      <div class="p-2">
+        <div class="mx-auto mt-8 grid w-full max-w-[62rem] grid-cols-1 gap-8">
+          <!-- Left Side (Who is this feedback for?) -->
+          <div>
+            <h1
+              class="mb-8 text-center text-2xl font-bold text-gray-800 lg:text-3xl">
+              Who is this feedback for?
+            </h1>
+            <div class="px-4 md:px-20">
+              <!-- Textfield -->
+              <input
+                type="text"
+                placeholder="Enter your feedback for"
+                formControlName="name"
+                class="mt-2 block w-full rounded border border-gray-300 p-2 text-sm" />
+            </div>
+          </div>
+
+          <!-- Right Side (Comments and Send Feedback) -->
+          <div>
+            <div class="mb-3 px-4 md:px-20">
+              <textarea
+                formControlName="note"
+                class="sm:h-30 mb-3 mt-5 w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-md lg:h-40"
+                placeholder="Add your comments..."></textarea>
+            </div>
+
+            <!-- Hide Identity Toggle -->
+            <div class="flex flex-col justify-between md:flex-row">
+              <div
+                class="mb-6 flex w-full items-center justify-end px-4 md:w-auto md:pl-20">
+                <label class="inline-flex cursor-pointer items-center">
+                  <input
+                    type="checkbox"
+                    formControlName="is_anonymous"
+                    class="peer sr-only" />
+                  <div
+                    class="peer relative h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rtl:peer-checked:after:-translate-x-full"></div>
+                  <div class="ms-3 flex flex-col">
+                    <span class="text-sm font-medium text-gray-900"
+                      >Hide my identity</span
+                    >
+                    <p class="text-xs text-gray-500">
+                      Your identity will be hidden
+                    </p>
+                  </div>
+                </label>
+              </div>
+
+              <div class="mb-6 w-full px-4 md:w-auto md:pr-20">
+                <button
+                  class="w-full rounded-md bg-blue-600 p-4 py-3 text-sm font-semibold text-white shadow-md transition duration-300 ease-in-out hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 md:w-[100px] lg:w-[200px]"
+                  (click)="submit()">
+                  <fa-icon
+                    [fixedWidth]="true"
+                    [icon]="faPaperPlane"
+                    class="mr-1"></fa-icon>
+                  Send Feedback
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
