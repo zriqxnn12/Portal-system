@@ -71,7 +71,6 @@ export class EventListComponent {
 
   loadData() {
     this.loading = true;
-    // Ambil user dari localStorage (atau service Auth kalau kamu punya)
     const userStr = localStorage.getItem('user'); // asumsikan user disimpan saat login
     const user = userStr ? JSON.parse(userStr) : null;
 
@@ -100,5 +99,9 @@ export class EventListComponent {
           });
         },
       });
+  }
+
+  navigateToDetail(event: Event) {
+    this.router.navigate(['/event/view/', event.id]);
   }
 }
