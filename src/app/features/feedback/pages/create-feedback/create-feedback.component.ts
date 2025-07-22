@@ -24,9 +24,6 @@ export class CreateFeedbackComponent {
     private fcToastService: FcToastService,
     private feedbackService: FeedbackService
   ) {
-    this.layoutService.setSearchConfig({
-      hide: true,
-    });
     this.layoutService.setHeaderConfig({
       title: 'Feedback',
       icon: '',

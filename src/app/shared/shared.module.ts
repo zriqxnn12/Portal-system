@@ -22,10 +22,12 @@ import { DebounceKeyupDirective } from './directives/debounce-keyup.directive';
 import { ClickOutsideDirective } from './directives/fc-clickoutside.directive';
 import { FcNumberDirective } from './directives/fc-number.directive';
 import { FcCurrencyPipe } from './pipes/fc-currency.pipe';
+import { TimeFormatPipe } from './pipes/time-format.pipe';
 
 @NgModule({
   declarations: [
     FcCurrencyPipe,
+    TimeFormatPipe,
     AbstractDebounceDirective,
     DebounceKeyupDirective,
     FcNumberDirective,
@@ -40,6 +42,7 @@ import { FcCurrencyPipe } from './pipes/fc-currency.pipe';
     InputNumberModule,
     FontAwesomeModule,
     FormsModule,
+    TimeFormatPipe,
     ReactiveFormsModule,
     FcCurrencyPipe,
     AutoFocusModule,

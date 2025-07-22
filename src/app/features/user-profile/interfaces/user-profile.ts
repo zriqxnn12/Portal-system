@@ -24,6 +24,7 @@ export interface Staff {
   role: number;
   status: number;
   note: string;
+  teacher: Teacher;
   user: User;
 }
 

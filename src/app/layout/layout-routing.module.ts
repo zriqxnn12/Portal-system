@@ -40,6 +40,11 @@ const routes: Routes = [
             (m) => m.FeedbackModule
           ),
       },
+      {
+        path: 'event',
+        loadChildren: () =>
+          import('../features/event/event.module').then((m) => m.EventModule),
+      },
       // {
       //   path: 'template-ui',
       //   loadChildren: () =>
