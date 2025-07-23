@@ -6,6 +6,7 @@ import {
   faCalendar,
   faClock,
   faLocationDot,
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import { FcConfirmService } from '@shared/components/fc-confirm/fc-confirm.service';
 import { FcToastService } from '@shared/components/fc-toast/fc-toast.service';
@@ -22,6 +23,7 @@ export class EventViewComponent {
   faLocationDot = faLocationDot;
   faCalendar = faCalendar;
   faClock = faClock;
+  faSpinner = faSpinner;
 
   imageUrl: string = '';
   @Input() event: Event = {} as Event;
@@ -76,7 +78,7 @@ export class EventViewComponent {
     });
   }
 
-  loadingBtn: boolean = true;
+  loadingBtn: boolean = false;
   requestAsParticipant() {
     this.fcConfirmService.open({
       header: 'Confirmation',

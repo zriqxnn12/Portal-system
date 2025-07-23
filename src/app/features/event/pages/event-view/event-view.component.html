@@ -51,6 +51,12 @@
             (click)="requestAsParticipant()"
             class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600">
             Request to Join
+            <fa-icon
+              class="pr-2"
+              *ngIf="loadingBtn"
+              [fixedWidth]="true"
+              [spin]="true"
+              [icon]="faSpinner"></fa-icon>
           </button>
         </div>
       </div>
@@ -70,6 +76,12 @@
         (click)="requestAsParticipant()"
         class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600">
         Request to Join
+        <fa-icon
+          class="pr-2"
+          *ngIf="loadingBtn"
+          [fixedWidth]="true"
+          [spin]="true"
+          [icon]="faSpinner"></fa-icon>
       </button>
     </div>
   </div>
