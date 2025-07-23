@@ -1,1 +1,76 @@
-<p>event-view works!</p>
+<div class="flex h-full gap-3 @container">
+  <div
+    class="flex h-full w-full flex-col gap-3 transition-all duration-700 ease-in-out @container">
+    <div class="py-[20vh] text-center" *ngIf="loading">
+      <fc-loading></fc-loading>
+    </div>
+
+    <div
+      *ngIf="!loading"
+      class="flex flex-col space-y-6 md:flex-row md:space-y-0">
+      <!-- Left Content-->
+      <div class="flex flex-row pl-3 md:w-1/3 md:flex-col">
+        <fc-image-preview
+          [preview]="true"
+          [src]="getImageFullUrl(event.file_path)"
+          alt="Music Festival"
+          class="h-full w-48 rounded-md" />
+        <div class="mt-2 rounded-md p-4">
+          <h2 class="text-2xl font-semibold">{{ event.title }}</h2>
+          <div class="mt-2 flex items-center">
+            <fa-icon
+              class="pr-2 text-gray-500"
+              [fixedWidth]="true"
+              [icon]="faLocationDot"></fa-icon>
+            <span class="text-md text-gray-700">{{ event.address }}</span>
+          </div>
+          <div class="mt-2 flex items-center text-gray-700">
+            <fa-icon
+              class="pr-2 text-gray-500"
+              [fixedWidth]="true"
+              [icon]="faCalendar"></fa-icon>
+            <span>{{ event.date | date: 'dd MMMM yyyy' }}</span>
+          </div>
+          <div class="mt-2 flex items-center text-gray-700">
+            <fa-icon
+              class="pr-2 text-gray-500"
+              [fixedWidth]="true"
+              [icon]="faClock"></fa-icon>
+            <span
+              >{{ event.start_time | timeFormat }} -
+              {{ event.end_time | timeFormat }} Wib</span
+            >
+          </div>
+          <div>
+            <div class="mt-2 text-2xl font-bold text-red-500">
+              {{ event.fee | fcCurrency }}
+            </div>
+          </div>
+          <button
+            *ngIf="!isMobileView"
+            (click)="requestAsParticipant()"
+            class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600">
+            Request to Join
+          </button>
+        </div>
+      </div>
+
+      <!--Right Content -->
+      <div class="w-full">
+        <h3 class="mb-2 text-xl font-bold">Description</h3>
+        <p class="mb-4 text-sm text-gray-700">{{ event.description }}</p>
+        <div>
+          <h3 class="mb-2 text-lg font-semibold">Quota: {{ event.quota }}</h3>
+        </div>
+      </div>
+
+      <!-- Button for MobileView and nonstaff-->
+      <button
+        *ngIf="isMobileView"
+        (click)="requestAsParticipant()"
+        class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600">
+        Request to Join
+      </button>
+    </div>
+  </div>
+</div>
