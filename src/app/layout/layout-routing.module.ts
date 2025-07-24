@@ -45,20 +45,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('../features/event/event.module').then((m) => m.EventModule),
       },
-      // {
-      //   path: 'template-ui',
-      //   loadChildren: () =>
-      //     import('../features/template-ui/template-ui.module').then(
-      //       (m) => m.TemplateUiModule
-      //     ),
-      // },
-      // {
-      //   path: 'calendar',
-      //   loadChildren: () =>
-      //     import('../features/calendar/calendar.module').then(
-      //       (m) => m.CalendarModule
-      //     ),
-      // },
+      {
+        path: 'course-schedule',
+        loadChildren: () =>
+          import('../features/course-schedule/course-schedule.module').then(
+            (m) => m.CourseScheduleModule
+          ),
+      },
     ],
   },
 ];
