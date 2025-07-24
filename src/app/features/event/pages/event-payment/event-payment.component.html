@@ -1,0 +1,98 @@
+<div class="flex h-full gap-3 @container">
+  <div
+    class="flex h-full w-full flex-col gap-3 transition-all duration-700 ease-in-out @container">
+    <div class="py-[20vh] text-center" *ngIf="loading">
+      <fc-loading></fc-loading>
+    </div>
+
+    <div
+      *ngIf="!loading"
+      class="flex flex-col space-y-6 md:flex-row md:space-y-0">
+      <!-- Left Content-->
+      <div class="flex flex-row pl-3 md:w-1/3 md:flex-col">
+        <fc-image-preview
+          [preview]="true"
+          [src]="getImageFullUrl(eventParticipant.event.file_path)"
+          alt="Music Festival"
+          class="h-full w-48 rounded-md" />
+        <div class="mt-2 rounded-md p-4">
+          <h2 class="text-2xl font-semibold">
+            {{ eventParticipant.event.title }}
+          </h2>
+          <div class="mt-2 flex items-center">
+            <fa-icon
+              class="pr-2 text-gray-500"
+              [fixedWidth]="true"
+              [icon]="faLocationDot"></fa-icon>
+            <span class="text-md text-gray-700">{{
+              eventParticipant.event.address
+            }}</span>
+          </div>
+          <div class="mt-2 flex items-center text-gray-700">
+            <fa-icon
+              class="pr-2 text-gray-500"
+              [fixedWidth]="true"
+              [icon]="faCalendar"></fa-icon>
+            <span>{{
+              eventParticipant.event.date | date: 'dd MMMM yyyy'
+            }}</span>
+          </div>
+          <div class="mt-2 flex items-center text-gray-700">
+            <fa-icon
+              class="pr-2 text-gray-500"
+              [fixedWidth]="true"
+              [icon]="faClock"></fa-icon>
+            <span
+              >{{ eventParticipant.event.start_time | timeFormat }} -
+              {{ eventParticipant.event.end_time | timeFormat }} WIB</span
+            >
+          </div>
+          <div>
+            <div class="mt-2 text-2xl font-bold text-red-500">
+              {{ eventParticipant.event.fee | fcCurrency }}
+            </div>
+          </div>
+          <button
+            *ngIf="!isMobileView"
+            (click)="submit()"
+            class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600">
+            Pay now
+          </button>
+        </div>
+      </div>
+
+      <!--Right Content -->
+      <div class="w-full">
+        <div class="w-full rounded-lg bg-gray-100 p-4 shadow-lg">
+          <h3 class="mb-4 text-xl font-bold">Price Summary</h3>
+
+          <div class="grid grid-cols-2 gap-3">
+            <!-- Kolom Kiri -->
+            <div class="mb-2">
+              <span class="text-md text-gray-600">Event Type</span>
+            </div>
+            <div class="text-md mb-2">
+              {{ eventParticipant.event.type_name }}
+            </div>
+
+            <!-- Kolom Kiri -->
+            <div class="mb-2">
+              <span class="text-md text-gray-600">Billed From</span>
+            </div>
+            <div class="text-md mb-2">
+              {{ eventParticipant.user.name }}
+            </div>
+
+            <!-- Kolom Kiri -->
+            <div class="mb-2">
+              <span class="text-md text-gray-600">Total Fee</span>
+            </div>
+            <div class="text-md mb-2 font-bold text-red-600">
+              {{ eventParticipant.event.fee | fcCurrency }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

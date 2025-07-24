@@ -1,0 +1,70 @@
+<div
+  class="space-y-3 rounded-lg bg-light-highest p-3 backdrop-blur-sm dark:bg-dark-highest">
+  <div class="flex items-center">
+    <h3 class="flex-1 text-sm font-medium">{{ title }}</h3>
+    <button
+      class="rounded-md p-2 hover:bg-light-lowest hover:dark:bg-dark-lowest"
+      (click)="onClose()">
+      <fa-icon [fixedWidth]="true" [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+  <div class="w-full space-y-3">
+    <!-- Images -->
+    <div
+      class="relative flex h-[200px] w-full flex-col rounded-md border-2 border-dashed border-gray-300 bg-gray-100 p-4"
+      (click)="fileInput.click()"
+      (drop)="handleDrop($event)"
+      (dragover)="handleDragOver($event)">
+      <div
+        class="mx-auto text-center text-gray-300"
+        *ngIf="pastedImages.length === 0">
+        <fa-icon
+          [icon]="faImage"
+          [fixedWidth]="true"
+          class="h-12 w-12 text-4xl"></fa-icon>
+        <h3 class="text-center">
+          Paste, Drag and Drop, or Select Images <br />
+        </h3>
+      </div>
+
+      <input
+        #fileInput
+        type="file"
+        multiple
+        (change)="onFileSelected($event); fileInput.value = ''"
+        class="hidden" />
+
+      <div class="flex flex-1 gap-3 overflow-x-auto">
+        <div
+          class="relative aspect-square h-full"
+          *ngFor="let image of pastedImages; let i = index">
+          <img
+            [src]="image.image_url"
+            alt="Pasted Image"
+            class="h-full w-full rounded-sm object-cover" />
+          <fa-icon
+            class="absolute right-2 top-2 cursor-pointer text-red-500"
+            [icon]="faTrash"
+            (click)="removeImage($event, i)"></fa-icon>
+        </div>
+      </div>
+    </div>
+    <!-- Submit Button -->
+    <div class="flex items-center justify-end gap-2">
+      <button
+        type="button"
+        (click)="submit()"
+        [disabled]="loadingSubmit"
+        [ngClass]="{
+          'opacity-50': loadingSubmit
+        }"
+        class="w-full rounded-md border border-transparent bg-green-700 p-3 text-white hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-700">
+        <fa-icon
+          [fixedWidth]="true"
+          [spin]="loadingSubmit"
+          [icon]="loadingSubmit ? faSpinner : faFloppyDisk"></fa-icon>
+        Submit
+      </button>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@
   <div
     class="flex h-full w-full flex-col gap-3 overflow-y-auto transition-all duration-700 ease-in-out @container">
     <div
-      *ngIf="!isMobileView"
+      *ngIf="!isMobileView; else mobileLayout"
       class="relative flex h-[300px] items-center justify-between rounded-lg bg-purple-100 p-10 shadow-md">
       <!-- Desktop Layout -->
       <img
@@ -31,80 +31,124 @@
       </div>
     </div>
 
-    <div class="mt-4 grid w-full gap-5">
-      <div
-        class="text-auto flex items-center justify-between font-semibold lg:text-lg">
-        <span>Your's Event</span>
+    <!-- Mobile Layout -->
+    <ng-template #mobileLayout>
+      <div class="relative flex h-auto w-full flex-col justify-between p-5">
+        <img
+          src="assets/images/bg/banner-event-sm.png"
+          alt="banner"
+          class="absolute inset-0 h-full w-full rounded-lg object-cover" />
+        <div class="relative z-10 mb-4 flex items-center justify-between">
+          <div class="me-4">
+            <h1 class="text-2xl font-bold text-white">Event</h1>
+            <p class="text-sm text-white">
+              Transform Your Talent, Embrace the Stage!
+            </p>
+          </div>
+          <img
+            src="assets/images/icon/event-img.png"
+            alt="event"
+            class="h-20 w-20 object-contain" />
+        </div>
+        <div class="relative z-10">
+          <input
+            type="text"
+            placeholder="Search Event"
+            fcDebounceKeyup
+            [debounceTime]="900"
+            class="p-input w-full rounded-lg px-4 py-2 text-sm text-gray-600 shadow-md focus:outline-none focus:ring-2 focus:ring-purple-600 lg:text-lg" />
+        </div>
       </div>
-      <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 xl:grid-cols-3">
-        <!-- event card -->
+    </ng-template>
+
+    <div class="mt-4 grid w-full gap-5">
+      <ng-container *ngIf="eventParticipants && eventParticipants.length > 0">
         <div
-          class="relative w-full rounded-2xl bg-[linear-gradient(#9971FF,#8B5DFF)] p-4 text-white shadow-lg">
-          <span
-            class="absolute right-0 top-0 rounded-bl-2xl rounded-tr-xl bg-blue-400 px-6 py-1 text-sm font-semibold text-white lg:py-2 lg:text-sm">
-            In Review
-          </span>
+          class="text-auto flex items-center justify-between font-semibold lg:text-lg">
+          <span>Your's Event</span>
+        </div>
+        <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 xl:grid-cols-3">
+          <ng-container *ngFor="let participant of eventParticipants">
+            <!-- event card -->
+            <div
+              class="relative w-full rounded-2xl bg-[linear-gradient(#9971FF,#8B5DFF)] p-4 text-white shadow-lg">
+              <span
+                [ngClass]="getStatusColor(participant.status)"
+                class="absolute right-0 top-0 rounded-bl-2xl rounded-tr-xl px-6 py-1 text-sm font-semibold text-white lg:py-2 lg:text-sm">
+                {{ participant.status_name }}
+              </span>
 
-          <div class="mt-2 flex items-center">
-            <fc-image-preview
-              [preview]="true"
-              [src]="'assets/images/bg/poster.png'"
-              alt="Event Image"
-              class="h-full w-24 rounded-lg" />
+              <div class="mt-2 flex items-center">
+                <fc-image-preview
+                  [preview]="true"
+                  [src]="getImageFullUrl(participant.event.file_path)"
+                  alt="Event Image"
+                  class="h-full w-24 rounded-lg" />
 
-            <div class="ml-4 w-full pt-2">
-              <h3 class="text-lg font-bold lg:text-lg">Orchestra</h3>
-              <div class="mt-2 space-y-1">
-                <div class="flex items-center">
-                  <fa-icon
-                    class="text-sm lg:text-lg"
-                    [fixedWidth]="true"
-                    [icon]="faLocationDot"></fa-icon>
-                  <span class="ml-2 text-xs lg:text-sm">Nagoya hill mall</span>
-                </div>
-                <div class="flex items-center">
-                  <fa-icon
-                    class="text-sm lg:text-lg"
-                    [fixedWidth]="true"
-                    [icon]="faCalendar"></fa-icon>
-                  <span class="= ml-2 text-xs lg:text-sm"> 29 June 2025 </span>
-                </div>
-                <div class="flex items-center">
-                  <fa-icon
-                    class="text-sm lg:text-lg"
-                    [fixedWidth]="true"
-                    [icon]="faClock"></fa-icon>
-                  <span class="ml-2 text-xs lg:text-sm">
-                    10:00 - 11:00 WIB
-                  </span>
-                </div>
-                <div
-                  class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                  <!-- Bagian kiri (ikon dan jumlah) -->
-                  <div class="mb-4 flex items-center lg:mb-0">
-                    <fa-icon
-                      class="text-sm text-yellow-300 lg:text-lg"
-                      [fixedWidth]="true"
-                      [icon]="faFire"></fa-icon>
-                    <span
-                      class="ml-2 text-sm font-bold text-yellow-300 lg:text-lg">
-                      IDR250.000
-                    </span>
-                  </div>
+                <div class="ml-4 w-full pt-2">
+                  <h3 class="text-lg font-bold lg:text-lg">
+                    {{ participant.event.title }}
+                  </h3>
+                  <div class="mt-2 space-y-1">
+                    <div class="flex items-center">
+                      <fa-icon
+                        class="text-sm lg:text-lg"
+                        [fixedWidth]="true"
+                        [icon]="faLocationDot"></fa-icon>
+                      <span class="ml-2 text-xs lg:text-sm">{{
+                        participant.event.address
+                      }}</span>
+                    </div>
+                    <div class="flex items-center">
+                      <fa-icon
+                        class="text-sm lg:text-lg"
+                        [fixedWidth]="true"
+                        [icon]="faCalendar"></fa-icon>
+                      <span class="= ml-2 text-xs lg:text-sm">{{
+                        participant.event.date | date: 'dd MMMM yyyy'
+                      }}</span>
+                    </div>
+                    <div class="flex items-center">
+                      <fa-icon
+                        class="text-sm lg:text-lg"
+                        [fixedWidth]="true"
+                        [icon]="faClock"></fa-icon>
+                      <span class="ml-2 text-xs lg:text-sm">
+                        {{ participant.event.start_time | timeFormat }} -
+                        {{ participant.event.end_time | timeFormat }} WIB
+                      </span>
+                    </div>
+                    <div
+                      class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                      <!-- Bagian kiri (ikon dan jumlah) -->
+                      <div class="mb-4 flex items-center lg:mb-0">
+                        <fa-icon
+                          class="text-sm text-yellow-300 lg:text-lg"
+                          [fixedWidth]="true"
+                          [icon]="faFire"></fa-icon>
+                        <span
+                          class="ml-2 text-sm font-bold text-yellow-300 lg:text-lg">
+                          {{ participant.event.fee | fcCurrency }}
+                        </span>
+                      </div>
 
-                  <!-- Bagian kanan (tombol Pay Now) -->
-                  <div class="flex justify-end lg:ml-auto">
-                    <button
-                      class="rounded-lg bg-purple-900 px-4 py-2 text-xs font-semibold text-white hover:bg-purple-800 lg:text-sm">
-                      Pay Now
-                    </button>
+                      <!-- Bagian kanan (tombol Pay Now) -->
+                      <div class="flex justify-end lg:ml-auto">
+                        <button
+                          (click)="navigateToPayment(participant)"
+                          *ngIf="participant.status === 1"
+                          class="rounded-lg bg-purple-900 px-4 py-2 text-xs font-semibold text-white hover:bg-purple-800 lg:text-sm">
+                          Pay Now
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ng-container>
         </div>
-      </div>
+      </ng-container>
     </div>
 
     <div class="mb-2 mt-4 grid w-full gap-5">
@@ -113,65 +157,88 @@
         <span>Explore Events</span>
       </div>
       <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 xl:grid-cols-3">
-        <ng-container *ngFor="let event of events">
-          <div class="flex rounded-lg bg-white p-2 shadow-lg lg:p-4">
-            <fc-image-preview
-              [preview]="true"
-              [src]="getImageFullUrl(event.file_path)"
-              alt="Event Image"
-              class="h-full w-24 rounded-lg" />
-            <div class="ml-4 w-full">
-              <h3 class="text-lg font-bold lg:text-lg">{{ event.title }}</h3>
-              <div class="mt-2 space-y-1">
-                <div class="flex items-center">
-                  <fa-icon
-                    class="text-gray-500"
-                    [fixedWidth]="true"
-                    [icon]="faLocationDot"></fa-icon>
-                  <span class="ml-2 text-xs text-gray-400 lg:text-sm">{{
-                    event.address
-                  }}</span>
-                </div>
-                <div class="flex items-center">
-                  <fa-icon
-                    class="text-gray-500"
-                    [fixedWidth]="true"
-                    [icon]="faCalendar"></fa-icon>
-                  <span class="ml-2 text-xs text-gray-400 lg:text-sm">
-                    {{ event.date | date: 'dd MMMM yyyy' }}
-                  </span>
-                </div>
-                <div class="flex items-center">
-                  <fa-icon
-                    class="text-gray-500"
-                    [fixedWidth]="true"
-                    [icon]="faClock"></fa-icon>
-                  <span class="ml-2 text-xs text-gray-400 lg:text-sm">
-                    {{ event.start_time | timeFormat }} -
-                    {{ event.end_time | timeFormat }}
-                  </span>
-                </div>
-                <div class="flex h-8 w-full items-center justify-between">
-                  <div class="flex items-center">
-                    <fa-icon
-                      class="text-purple-600"
-                      [fixedWidth]="true"
-                      [icon]="faUsers"></fa-icon>
-                    <span class="ml-2 text-xs text-purple-600 lg:text-sm">
-                      {{ event.type_name }} Event
-                    </span>
-                  </div>
-                  <button
-                    (click)="navigateToDetail(event)"
-                    class="rounded-full border border-purple-600 px-2 py-1 text-xs font-semibold text-purple-600 hover:bg-purple-100 lg:px-4 lg:text-sm">
-                    View Event
-                  </button>
-                </div>
+        <ng-container *ngIf="loading">
+          <div
+            *ngFor="let skeleton of [1, 2, 3]"
+            class="flex animate-pulse rounded-lg bg-white p-2 shadow-lg lg:p-4">
+            <div class="h-full w-24 rounded-lg bg-gray-300"></div>
+            <div class="ml-4 flex-1 space-y-3">
+              <div class="h-5 w-2/3 rounded bg-gray-300"></div>
+              <div class="h-4 w-1/2 rounded bg-gray-300"></div>
+              <div class="h-4 w-1/4 rounded bg-gray-300"></div>
+              <div class="mt-4 flex gap-2">
+                <div class="h-4 w-12 rounded bg-gray-300"></div>
+                <div class="h-4 w-16 rounded bg-gray-300"></div>
               </div>
             </div>
           </div>
         </ng-container>
+        <ng-container *ngIf="!loading && events.length > 0">
+          <ng-container *ngFor="let event of events">
+            <div class="flex rounded-lg bg-white p-2 shadow-lg lg:p-4">
+              <fc-image-preview
+                [preview]="true"
+                [src]="getImageFullUrl(event.file_path)"
+                alt="Event Image"
+                class="h-full w-24 rounded-lg" />
+              <div class="ml-4 w-full">
+                <h3 class="text-lg font-bold lg:text-lg">{{ event.title }}</h3>
+                <div class="mt-2 space-y-1">
+                  <div class="flex items-center">
+                    <fa-icon
+                      class="text-gray-500"
+                      [fixedWidth]="true"
+                      [icon]="faLocationDot"></fa-icon>
+                    <span class="ml-2 text-xs text-gray-400 lg:text-sm">{{
+                      event.address
+                    }}</span>
+                  </div>
+                  <div class="flex items-center">
+                    <fa-icon
+                      class="text-gray-500"
+                      [fixedWidth]="true"
+                      [icon]="faCalendar"></fa-icon>
+                    <span class="ml-2 text-xs text-gray-400 lg:text-sm">
+                      {{ event.date | date: 'dd MMMM yyyy' }}
+                    </span>
+                  </div>
+                  <div class="flex items-center">
+                    <fa-icon
+                      class="text-gray-500"
+                      [fixedWidth]="true"
+                      [icon]="faClock"></fa-icon>
+                    <span class="ml-2 text-xs text-gray-400 lg:text-sm">
+                      {{ event.start_time | timeFormat }} -
+                      {{ event.end_time | timeFormat }}
+                    </span>
+                  </div>
+                  <div class="flex h-8 w-full items-center justify-between">
+                    <div class="flex items-center">
+                      <fa-icon
+                        class="text-purple-600"
+                        [fixedWidth]="true"
+                        [icon]="faUsers"></fa-icon>
+                      <span class="ml-2 text-xs text-purple-600 lg:text-sm">
+                        {{ event.type_name }} Event
+                      </span>
+                    </div>
+                    <button
+                      (click)="navigateToDetail(event)"
+                      class="rounded-full border border-purple-600 px-2 py-1 text-xs font-semibold text-purple-600 hover:bg-purple-100 lg:px-4 lg:text-sm">
+                      View Event
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
       </div>
+      <ng-container *ngIf="!loading && events.length == 0">
+        <div class="w-full py-[20vh] text-center">
+          <p>No data found</p>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

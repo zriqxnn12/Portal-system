@@ -1,7 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { Event } from '@features/event/interfaces/event';
+import { AuthService } from '@features/auth/services/auth.service';
+import { Event, EventParticipant } from '@features/event/interfaces/event';
 import { EventService } from '@features/event/services/event.service';
+import { User } from '@features/user-profile/interfaces/user-profile';
 import {
   faCalendar,
   faClock,
@@ -29,16 +31,22 @@ export class EventListComponent {
   imageUrl: string = '';
   loading: boolean = true;
   events: Event[] = [];
+  eventParticipants: EventParticipant[] = [];
   isMobileView: boolean = false;
+  user: User = {} as User;
   type: number | undefined = 1;
   constructor(
     private layoutService: LayoutService,
     private router: Router,
     private fcToastService: FcToastService,
+    private authService: AuthService,
     private eventService: EventService
   ) {
     this.layoutService.setSearchConfig({
       hide: true,
+    });
+    this.authService.getCurrentUserData.subscribe((user) => {
+      this.user = user;
     });
     this.layoutService.setHeaderConfig({
       title: 'Event',
@@ -56,6 +64,7 @@ export class EventListComponent {
 
   ngOnInit(): void {
     this.loadData();
+    this.loadEventParticipants();
   }
 
   ngOnDestroy(): void {
@@ -88,9 +97,23 @@ export class EventListComponent {
         next: (res: any) => {
           this.loading = false;
           const allEvents = res.data.events;
-          this.events = allEvents.filter(
+          // Simpan dulu, filter nanti setelah participants dimuat
+          const filteredEvents = allEvents.filter(
             (event: any) => event.type_name === userType
           );
+          if (this.eventParticipants.length > 0) {
+            const joinedEventIds = this.eventParticipants.map(
+              (p) => p.event_id
+            );
+            this.events = filteredEvents.filter(
+              (event: any) => !joinedEventIds.includes(event.id)
+            );
+          } else {
+            this.events = filteredEvents;
+          }
+          // this.events = allEvents.filter(
+          //   (event: any) => event.type_name === userType
+          // );
         },
         error: (err: any) => {
           this.loading = false;
@@ -101,7 +124,53 @@ export class EventListComponent {
       });
   }
 
+  loadEventParticipants() {
+    this.loading = true;
+    this.eventService
+      .getEventParticipants()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          this.loading = false;
+          this.eventParticipants = res.data.event_participants;
+          this.loadData();
+        },
+        error: (err: any) => {
+          this.loading = false;
+          this.layoutService.setSearchConfig({
+            loading: false,
+          });
+        },
+      });
+  }
+
+  getStatusColor(status: number): string {
+    switch (status) {
+      case 0: // Request to join
+        return 'bg-slate-400';
+      case 1: // Accepted
+        return 'bg-yellow-400';
+      case 2: // Rejected
+        return 'bg-red-400';
+      case 3: // Payment Review
+        return 'bg-sky-400';
+      case 4: // Paid
+        return 'bg-green-400';
+      default:
+        return '';
+    }
+  }
+
   navigateToDetail(event: Event) {
     this.router.navigate(['/event/view/', event.id]);
+  }
+
+  navigateToPayment(participant: EventParticipant) {
+    this.router.navigate([
+      '/event',
+      participant.event.id,
+      'payment',
+      participant.id,
+    ]);
   }
 }
