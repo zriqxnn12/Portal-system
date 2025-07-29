@@ -1,7 +1,69 @@
 <div class="flex h-full flex-col space-y-2 @container">
+  <!-- Dekstop size -->
   <div class="mt-5 hidden w-full overflow-y-auto pb-2 md:flex">
     <div class="w-2/5">
-      <app-calendar></app-calendar>
+      <app-calendar
+        (dateSelected)="onDateSelected($event)"
+        (monthChanged)="onMonthChange($event)"></app-calendar>
+    </div>
+    <div class="w-3/5 overflow-y-auto px-10">
+      <div *ngIf="!loading">
+        <ng-container *ngIf="scheduledLessons.length > 0">
+          <div
+            class="sticky top-0 z-10 mb-4 mt-3 flex items-center justify-between bg-white py-3">
+            <h2 class="text-lg font-semibold">Scheduled Lesson</h2>
+          </div>
+          <div class="rounded-lg border bg-white p-2 shadow">
+            <div class="space-y-6">
+              <ng-container *ngFor="let lesson of scheduledLessons">
+                <app-lesson-card-desk
+                  [lesson]="lesson"
+                  (scheduleUpdated)="onLessonStatusChanged($event)"
+                  [user]="user"></app-lesson-card-desk>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="onProgressLessons.length > 0">
+          <div
+            class="sticky top-0 z-10 mb-4 mt-3 flex items-center justify-between bg-white py-3">
+            <h2 class="text-lg font-semibold">On Progress Lesson</h2>
+          </div>
+          <div class="rounded-lg border bg-white p-2 shadow">
+            <div class="space-y-6">
+              <ng-container *ngFor="let lesson of onProgressLessons">
+                <app-lesson-card-desk
+                  [lesson]="lesson"
+                  [user]="user"></app-lesson-card-desk>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="completedLessons.length > 0">
+          <div
+            class="sticky top-0 z-10 mb-4 mt-3 flex items-center justify-between bg-white py-3">
+            <h2 class="text-lg font-semibold">Completed Lesson</h2>
+          </div>
+          <div class="rounded-lg border bg-white p-2 shadow">
+            <div class="space-y-6">
+              <ng-container *ngFor="let lesson of completedLessons">
+                <app-lesson-card-desk
+                  [lesson]="lesson"
+                  [user]="user"></app-lesson-card-desk>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+        <div
+          *ngIf="!courseSchedules.length"
+          class="mt-28 text-center text-gray-400">
+          <img
+            src="assets/images/placeholder/placeholder_empty.png"
+            alt="placeholder"
+            class="mx-auto h-52 w-72" />
+          <span>No schedule for now</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

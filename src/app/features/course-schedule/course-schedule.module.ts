@@ -7,9 +7,15 @@ import { CourseScheduleListComponent } from './pages/course-schedule-list/course
 import { SharedModule } from '@shared/shared.module';
 import { FcFileInputModule } from '@shared/components/fc-file-input/fc-file-input.module';
 import { CalendarComponent } from './components/calendar/calendar.component';
+import { LessonCardDeskComponent } from './components/lesson-card-desk/lesson-card-desk.component';
 
 @NgModule({
-  declarations: [CourseScheduleComponent, CourseScheduleListComponent, CalendarComponent],
+  declarations: [
+    CourseScheduleComponent,
+    CourseScheduleListComponent,
+    CalendarComponent,
+    LessonCardDeskComponent,
+  ],
   imports: [
     CommonModule,
     CourseScheduleRoutingModule,

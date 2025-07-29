@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnChanges,
   Output,
   SimpleChanges,
@@ -21,12 +22,13 @@ interface CalendarDay {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
 })
-export class CalendarComponent implements OnChanges {
+export class CalendarComponent {
   faLeft = faChevronLeft;
   faRight = faChevronRight;
 
   @Output() dateSelected = new EventEmitter<moment.Moment>();
   @Output() monthChanged = new EventEmitter<moment.Moment>();
+  @Input() courseSchedules: any[] = [];
   currentMonth: moment.Moment;
   selectedDate: moment.Moment;
   daysInMonth: (CalendarDay | null)[] = [];
@@ -39,11 +41,11 @@ export class CalendarComponent implements OnChanges {
     this.daysInMonth = [];
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // if (changes['courseSchedulesCalendar'] || changes['events']) {
-    //   this.generateCalendar();
-    // }
-  }
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['courseSchedulesCalendar'] || changes['events']) {
+  //     this.generateCalendar();
+  //   }
+  // }
 
   ngOnInit(): void {
     this.generateCalendar();

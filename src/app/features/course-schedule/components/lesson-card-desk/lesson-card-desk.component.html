@@ -1,0 +1,81 @@
+<div class="my-4 grid grid-cols-12 items-center gap-2">
+  <div class="col-span-2 text-center">
+    <p class="mb-3 text-lg font-bold">
+      {{ lesson.start_time | timeFormat }}
+    </p>
+    <p class="text-sm text-gray-400">
+      {{ lesson.end_time | timeFormat }}
+    </p>
+  </div>
+
+  <div class="col-span-1 h-full border-l-2 border-gray-500"></div>
+
+  <div
+    class="relative col-span-9 me-4 flex items-start justify-between rounded-lg border bg-white p-2 shadow">
+    <div class="flex items-center space-x-4 px-4">
+      <img
+        [src]="'assets/images/placeholder/dummy-photo-2.png'"
+        alt="profile"
+        class="h-10 w-10 rounded-full object-cover" />
+      <div>
+        <p class="text-base font-semibold uppercase text-gray-900">
+          {{
+            user.staff
+              ? lesson.course.student.user.name
+              : lesson.teacher.staff.user.name
+          }}
+        </p>
+        <!-- Lesson Type -->
+        <p class="text-gray-500">
+          {{ lesson.course.instrument.name }} - {{ lesson.classroom.room }}
+        </p>
+        <!-- Duration -->
+        <p class="text-sm text-gray-400">{{ lesson.duration }} minute</p>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!user.staff">
+      <div *ngIf="lesson.status == 0" class="absolute bottom-3 right-10">
+        <button
+          class="flex items-center justify-center rounded-md border border-slate-300 bg-white p-1 text-center shadow-md">
+          <img
+            src="assets/images/icon/reschedules.png"
+            alt="icon"
+            class="h-5 w-5 object-contain" />
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="user.staff">
+      <!-- button to attendance form -->
+      <div *ngIf="lesson.status == 1" class="absolute bottom-3 right-10">
+        <button
+          class="flex items-center justify-center rounded-md border border-slate-300 bg-white p-1 text-center shadow-md">
+          <img
+            src="assets/images/icon/checklist.png"
+            alt="icon"
+            class="h-5 w-5 object-contain" />
+        </button>
+      </div>
+      <!-- button set as on progress -->
+      <div *ngIf="lesson.status == 0" class="absolute bottom-3 right-10">
+        <button
+          (click)="setScheduleAsOnProgress(lesson.id)"
+          class="flex items-center justify-center rounded-md border border-slate-300 bg-white p-1 text-center shadow-md">
+          <img
+            src="assets/images/icon/timelog.png"
+            alt="icon"
+            class="h-5 w-5 object-contain" />
+        </button>
+      </div>
+    </ng-container>
+
+    <div class="absolute right-0 top-0">
+      <div
+        [ngClass]="getStatusColor(lesson.status)"
+        class="rounded-bl-xl rounded-tr-lg px-4 py-1 text-sm text-white">
+        {{ lesson.status_name }}
+      </div>
+    </div>
+  </div>
+</div>

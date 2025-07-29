@@ -16,6 +16,7 @@ module.exports = {
         'light-low': '#F8F9FA',
         'light-high': '#FFFFFF',
         'light-highest': '#FFFFFF',
+        'blue-gray': '#73939F',
       },
       fontSize: {
         '2xs': '0.65rem',
@@ -27,7 +28,5 @@ module.exports = {
     },
   },
   darkMode: 'class',
-  plugins: [
-    require('@tailwindcss/container-queries'),
-  ],
+  plugins: [require('@tailwindcss/container-queries')],
 };
