@@ -51,6 +51,8 @@ export class CourseScheduleListComponent {
   completedLessons: any[] = [];
   scheduledLessons: any[] = [];
   onProgressLessons: any[] = [];
+  absentLessons: any[] = [];
+  rescheduleLessons: any[] = [];
   loading: boolean = false;
   selectedDate = Date();
   user: any;
@@ -58,7 +60,6 @@ export class CourseScheduleListComponent {
     private layoutService: LayoutService,
     private router: Router,
     private route: ActivatedRoute,
-    private fcToastService: FcToastService,
     private courseScheduleService: CourseScheduleService,
     private authService: AuthService
   ) {
@@ -132,6 +133,12 @@ export class CourseScheduleListComponent {
           this.onProgressLessons = this.courseSchedules.filter(
             (lesson) => lesson.status_name == 'On Progress'
           );
+          this.absentLessons = this.courseSchedules.filter(
+            (lesson) => lesson.status_name == 'Absent'
+          );
+          this.rescheduleLessons = this.courseSchedules.filter(
+            (lesson) => lesson.status_name == 'Rescheduled'
+          );
         },
         error: (err) => {
           this.loading = false;
@@ -139,18 +146,64 @@ export class CourseScheduleListComponent {
       });
   }
 
-  onLessonStatusChanged(lessonId: number): void {
-    const lessonIndex = this.scheduledLessons.findIndex(
-      (l) => l.id === lessonId
-    );
-    if (lessonIndex !== -1) {
-      const updatedLesson = { ...this.scheduledLessons[lessonIndex] };
-      updatedLesson.status = 1; // On Progress
-      updatedLesson.status_name = 'On Progress';
+  onLessonStatusChanged(event: { id: number; newStatus: number }): void {
+    const { id, newStatus } = event;
+    const allLessons = [
+      ...this.scheduledLessons,
+      ...this.onProgressLessons,
+      ...this.rescheduleLessons,
+      ...this.completedLessons,
+      ...this.absentLessons,
+    ];
 
-      // Pindahkan dari scheduled ke onProgress
-      this.scheduledLessons.splice(lessonIndex, 1);
-      this.onProgressLessons.unshift(updatedLesson);
+    const updatedLesson = allLessons.find((l) => l.id === id);
+    if (!updatedLesson) return;
+
+    // Update status
+    updatedLesson.status = newStatus;
+    updatedLesson.status_name = this.getStatusName(newStatus);
+
+    // Hapus dari semua list
+    this.scheduledLessons = this.scheduledLessons.filter((l) => l.id !== id);
+    this.onProgressLessons = this.onProgressLessons.filter((l) => l.id !== id);
+    this.rescheduleLessons = this.onProgressLessons.filter((l) => l.id !== id);
+    this.completedLessons = this.completedLessons.filter((l) => l.id !== id);
+    this.absentLessons = this.absentLessons.filter((l) => l.id !== id);
+
+    // Masukkan ke list baru
+    switch (newStatus) {
+      case 0:
+        this.scheduledLessons.unshift(updatedLesson);
+        break;
+      case 1:
+        this.onProgressLessons.unshift(updatedLesson);
+        break;
+      case 2:
+        this.onProgressLessons.unshift(updatedLesson);
+        break;
+      case 3:
+        this.completedLessons.unshift(updatedLesson);
+        break;
+      case 4:
+        this.completedLessons.unshift(updatedLesson);
+        break;
+    }
+  }
+
+  getStatusName(status: number): string {
+    switch (status) {
+      case 0:
+        return 'Scheduled';
+      case 1:
+        return 'On Progress';
+      case 2:
+        return 'Rescheduled';
+      case 3:
+        return 'Completed';
+      case 4:
+        return 'Absent';
+      default:
+        return '';
     }
   }
 }

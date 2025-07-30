@@ -1,0 +1,71 @@
+<div
+  class="space-y-3 rounded-lg bg-light-highest p-3 backdrop-blur-sm dark:bg-dark-highest">
+  <div class="flex items-center">
+    <h3 class="flex-1 text-sm font-medium">{{ title }}</h3>
+    <button
+      class="rounded-md p-2 hover:bg-light-lowest hover:dark:bg-dark-lowest"
+      (click)="onClose()">
+      <fa-icon [fixedWidth]="true" [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+  <div class="space-y-3">
+    <form
+      [formGroup]="attendanceForm"
+      class="body w-full overflow-y-auto @container dark:bg-dark-high">
+      <div class="grid gap-4">
+        <fc-select-option
+          [options]="attendanceOptions"
+          formControlName="status"
+          [optionValue]="'id'"
+          [optionLabel]="'name'"
+          title="Attendance"
+          [placeholder]="'Present/Late'"
+          [desktopView]="'overlay'"
+          [mobileView]="'overlay'" />
+        <fc-input-text
+          title="Note"
+          formControlName="note"
+          placeholder="Enter Note"></fc-input-text>
+        <!-- Upload File -->
+        <fc-file-input
+          *ngIf="!attendanceForm.value.file"
+          (onInput)="addImage($event)">
+          <div
+            class="form-input flex h-32 w-full flex-col items-center justify-center rounded-lg border border-transparent bg-light-lowest p-3 text-center dark:bg-dark-low">
+            <fa-icon [fixedWidth]="true" [icon]="faCloudArrowUp"></fa-icon>
+            <p class="text-xs">Drag or Upload Photo here</p>
+          </div>
+        </fc-file-input>
+        <div
+          *ngIf="attendanceForm.value.file_path"
+          class="aspect-square w-full flex-none overflow-hidden rounded-md border border-slate-300">
+          <fc-image-preview
+            [preview]="true"
+            [src]="attendanceForm.value.file_path.img_src">
+            <div class="action-buttons flex gap-1">
+              <button
+                type="button"
+                (click)="removeImage()"
+                class="rounded-md bg-red-600 p-1 text-2xs text-white hover:bg-red-700 dark:hover:bg-red-500">
+                <fa-icon [fixedWidth]="true" [icon]="faTrash"></fa-icon>
+              </button>
+            </div>
+          </fc-image-preview>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-3 pt-3">
+        <button
+          type="button"
+          (click)="submit()"
+          class="fc-animate-translate-up flex items-center gap-2 rounded-md bg-green-500 p-2 text-sm text-white">
+          <fa-icon
+            *ngIf="loading"
+            class="load-icon"
+            [icon]="faSpinner"
+            [spin]="true"></fa-icon>
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
