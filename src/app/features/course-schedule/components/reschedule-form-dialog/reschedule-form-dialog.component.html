@@ -1,0 +1,48 @@
+<div
+  class="space-y-3 rounded-lg bg-light-highest p-3 backdrop-blur-sm dark:bg-dark-highest">
+  <div class="flex items-center">
+    <h3 class="flex-1 text-sm font-medium">{{ title }}</h3>
+    <button
+      class="rounded-md p-2 hover:bg-light-lowest hover:dark:bg-dark-lowest"
+      (click)="onClose()">
+      <fa-icon [fixedWidth]="true" [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+  <div class="space-y-3">
+    <form
+      [formGroup]="rescheduleForm"
+      class="body w-full overflow-y-auto @container dark:bg-dark-high">
+      <div class="grid gap-4">
+        <fc-datepicker
+          [placeholder]="'Enter Date'"
+          title="Reschedule Date"
+          formControlName="date" />
+        <fc-timepicker
+          title="Schedule Start Time"
+          formControlName="start_time"
+          placeholder="Select Start Time" />
+        <fc-timepicker
+          title="Schedule end Time"
+          formControlName="end_time"
+          placeholder="Select End Time" />
+        <fc-input-text
+          title="Note"
+          formControlName="note"
+          placeholder="Enter Note"></fc-input-text>
+      </div>
+      <div class="flex items-center justify-end gap-3 pt-3">
+        <button
+          type="button"
+          (click)="submit()"
+          class="fc-animate-translate-up flex items-center gap-2 rounded-md bg-green-500 p-2 text-sm text-white">
+          <fa-icon
+            *ngIf="loading"
+            class="load-icon"
+            [icon]="faSpinner"
+            [spin]="true"></fa-icon>
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

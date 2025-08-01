@@ -12,6 +12,10 @@ import { AttendanceFormDialogComponent } from './components/attendance-form-dial
 import { FcSelectOptionModule } from '@shared/components/fc-select-option/fc-select-option.module';
 import { FcInputTextModule } from '@shared/components/fc-input-text/fc-input-text.module';
 import { FcImagePreviewModule } from '@shared/components/fc-image-preview/fc-image-preview.module';
+import { RescheduleFormDialogComponent } from './components/reschedule-form-dialog/reschedule-form-dialog.component';
+import { FcDatepickerModule } from '@shared/components/fc-datepicker/fc-datepicker.module';
+import { FcTextareaModule } from '@shared/components/fc-textarea/fc-textarea.module';
+import { FcTimepickerModule } from '@shared/components/fc-timepicker/fc-timepicker.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +24,7 @@ import { FcImagePreviewModule } from '@shared/components/fc-image-preview/fc-ima
     CalendarComponent,
     LessonCardDeskComponent,
     AttendanceFormDialogComponent,
+    RescheduleFormDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -29,6 +34,9 @@ import { FcImagePreviewModule } from '@shared/components/fc-image-preview/fc-ima
     FcSelectOptionModule,
     FcInputTextModule,
     FcImagePreviewModule,
+    FcDatepickerModule,
+    FcTextareaModule,
+    FcTimepickerModule,
   ],
 })
 export class CourseScheduleModule {}

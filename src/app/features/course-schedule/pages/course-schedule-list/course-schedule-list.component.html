@@ -80,6 +80,7 @@
               <ng-container *ngFor="let lesson of rescheduleLessons">
                 <app-lesson-card-desk
                   [lesson]="lesson"
+                  (scheduleUpdated)="onLessonStatusChanged($event)"
                   [user]="user"></app-lesson-card-desk>
               </ng-container>
             </div>

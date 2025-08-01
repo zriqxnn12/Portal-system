@@ -5,6 +5,7 @@ import { FcConfirmService } from '@shared/components/fc-confirm/fc-confirm.servi
 import { FcToastService } from '@shared/components/fc-toast/fc-toast.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AttendanceFormDialogComponent } from '../attendance-form-dialog/attendance-form-dialog.component';
+import { RescheduleFormDialogComponent } from '../reschedule-form-dialog/reschedule-form-dialog.component';
 
 @Component({
   selector: 'app-lesson-card-desk',
@@ -105,6 +106,30 @@ export class LessonCardDeskComponent {
         }
 
         this.scheduleUpdated.emit({ id: lesson, newStatus });
+      }
+    });
+  }
+
+  openRescheduleForm(lesson: any) {
+    const ref = this.dialogService.open(RescheduleFormDialogComponent, {
+      data: {
+        title: 'Request a reschedule',
+        lessonId: lesson,
+      },
+      showHeader: false,
+      contentStyle: {
+        padding: '0',
+      },
+      style: {
+        overflow: 'hidden',
+      },
+      styleClass: 'rounded-sm',
+      dismissableMask: true,
+      width: '600px',
+    });
+    ref.onClose.subscribe((reschedule) => {
+      if (reschedule) {
+        this.scheduleUpdated.emit({ id: lesson, newStatus: 2 });
       }
     });
   }

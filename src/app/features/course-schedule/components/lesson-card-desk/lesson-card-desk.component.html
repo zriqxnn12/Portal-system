@@ -37,6 +37,7 @@
     <ng-container *ngIf="!user.staff">
       <div *ngIf="lesson.status == 0" class="absolute bottom-3 right-10">
         <button
+          (click)="openRescheduleForm(lesson.id)"
           class="flex items-center justify-center rounded-md border border-slate-300 bg-white p-1 text-center shadow-md">
           <img
             src="assets/images/icon/reschedules.png"
@@ -59,7 +60,9 @@
         </button>
       </div>
       <!-- button set as on progress -->
-      <div *ngIf="lesson.status == 0" class="absolute bottom-3 right-10">
+      <div
+        *ngIf="lesson.status == 0 || lesson.status == 2"
+        class="absolute bottom-3 right-10">
         <button
           (click)="setScheduleAsOnProgress(lesson.id)"
           class="flex items-center justify-center rounded-md border border-slate-300 bg-white p-1 text-center shadow-md">

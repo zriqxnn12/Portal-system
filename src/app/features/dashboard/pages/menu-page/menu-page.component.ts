@@ -58,7 +58,7 @@ export class MenuPageComponent {
     {
       title: 'Feedback',
       icon: 'assets/images/icon/feedback.png',
-      is_only_for_student: true,
+      is_only_for_student: false,
       link: '/feedback',
     },
   ];

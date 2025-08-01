@@ -29,4 +29,11 @@ export class CourseScheduleService {
       data
     );
   }
+
+  addCourseReschedule(id: number, data: any) {
+    return this.http.post(
+      `${ROOT_API}/course-schedules/${id}/reschedules`,
+      data
+    );
+  }
 }
