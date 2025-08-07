@@ -1,1 +1,65 @@
-<p>user-profile works!</p>
+<div class="flex min-h-screen flex-col gap-3 overflow-y-auto pb-10 @container">
+  <div
+    class="mt-10 flex w-full flex-col gap-3 transition-all duration-700 ease-in-out @container">
+    <form [formGroup]="accountForm">
+      <div class="mx-auto flex w-full max-w-[40rem] flex-col gap-6">
+        <div class="mx-2 mb-1">
+          <label for="name" class="mb-2 block text-gray-700">Name</label>
+          <input
+            type="text"
+            formControlName="name"
+            id="name"
+            placeholder="Enter Name"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mx-2 mb-1">
+          <label for="email" class="mb-2 block text-gray-700">Email</label>
+          <input
+            type="text"
+            formControlName="email"
+            id="email"
+            placeholder="Enter email"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mx-2 mb-1">
+          <label for="phone_no" class="mb-2 block text-gray-700"
+            >Phone Number</label
+          >
+          <input
+            type="text"
+            formControlName="phone_no"
+            id="phone_no"
+            placeholder="Enter phone number"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mx-2 mb-1">
+          <label for="address" class="mb-2 block text-gray-700">Address</label>
+          <input
+            type="text"
+            formControlName="address"
+            id="address"
+            placeholder="Enter address"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mx-2 mb-1">
+          <label for="birth_place" class="mb-2 block text-gray-700"
+            >Birth Place</label
+          >
+          <input
+            type="text"
+            formControlName="birth_place"
+            id="birth_place"
+            placeholder="Enter birth place"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mx-2 mt-4 md:col-span-2">
+          <button
+            type="submit"
+            class="w-full rounded-lg bg-blue-500 py-3 font-semibold text-white hover:bg-blue-600">
+            Update Profile
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
