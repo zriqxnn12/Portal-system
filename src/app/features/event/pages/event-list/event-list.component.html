@@ -224,8 +224,19 @@
                     </div>
                     <button
                       (click)="navigateToDetail(event)"
+                      [disabled]="isEventExpired(event.date)"
+                      [ngClass]="{
+                        'cursor-not-allowed border-gray-300 bg-gray-300 text-gray-500':
+                          isEventExpired(event.date),
+                        'border-purple-600 text-purple-600 hover:bg-purple-100':
+                          !isEventExpired(event.date)
+                      }"
                       class="rounded-full border border-purple-600 px-2 py-1 text-xs font-semibold text-purple-600 hover:bg-purple-100 lg:px-4 lg:text-sm">
-                      View Event
+                      {{
+                        isEventExpired(event.date)
+                          ? 'Event Expired'
+                          : 'View Event'
+                      }}
                     </button>
                   </div>
                 </div>

@@ -31,12 +31,12 @@ export class MenuPageComponent {
   user: User = {} as User;
 
   menuNavigation: MenuItem[] = [
-    {
-      title: 'Account',
-      icon: 'assets/images/icon/user-profile.png',
-      is_only_for_student: false,
-      link: '/user-profile',
-    },
+    // {
+    //   title: 'Account',
+    //   icon: 'assets/images/icon/user-profile.png',
+    //   is_only_for_student: false,
+    //   link: '/user-profile',
+    // },
     {
       title: 'Course',
       icon: 'assets/images/icon/course.png',

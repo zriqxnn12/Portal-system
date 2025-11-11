@@ -124,6 +124,12 @@ export class EventListComponent {
       });
   }
 
+  isEventExpired(eventDate: string) {
+    const today = new Date();
+    const eventDateTime = new Date(eventDate);
+    return eventDateTime < today; // true jika tanggal terlewat
+  }
+
   loadEventParticipants() {
     this.loading = true;
     this.eventService
